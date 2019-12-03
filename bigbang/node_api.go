@@ -410,6 +410,9 @@ func (c *Client) getToFromTxID (txid string, vout byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	vouttmp := vout
+
 	isChange := (vout == 1)
 	for {
 		if isChange {
@@ -430,6 +433,11 @@ func (c *Client) getToFromTxID (txid string, vout byte) (string, error) {
 			isChange = (resp.Get("transaction").Get("vin").Array()[0].Get("vout").Uint() == 1)
 
 		} else {
+			if vouttmp == 0 {
+				to = resp.Get("transaction").Get("sendto").String()
+				break
+			}
+
 			if len(resp.Get("transaction").Get("vin").Array()) == 0 {
 				to = resp.Get("transaction").Get("sendto").String()
 				break
