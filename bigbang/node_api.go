@@ -427,7 +427,7 @@ func (c *Client) getToFromTxID (txid string, vout byte) (string, error) {
 				to = resp.Get("transaction").Get("sendto").String()
 				break
 			}
-			isChange = (resp.Get("transaction").Get("vin").Array()[0].Get("txid").Uint() == 1)
+			isChange = (resp.Get("transaction").Get("vin").Array()[0].Get("vout").Uint() == 1)
 
 		} else {
 			if len(resp.Get("transaction").Get("vin").Array()) == 0 {
