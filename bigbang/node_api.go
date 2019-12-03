@@ -430,6 +430,19 @@ func (c *Client) getToFromTxID (txid string, vout byte) (string, error) {
 			isChange = (resp.Get("transaction").Get("vin").Array()[0].Get("txid").Uint() == 1)
 
 		} else {
+			if len(resp.Get("transaction").Get("vin").Array()) == 0 {
+				to = resp.Get("transaction").Get("sendto").String()
+				break
+			}
+			request = map[string]interface{}{
+				"txid":resp.Get("transaction").Get("vin").Array()[0].Get("txid").String(),
+				"serialized": false,
+			}
+			resp, err = c.Call(path, request)
+
+			if err != nil {
+				return "", err
+			}
 			to = resp.Get("transaction").Get("sendto").String()
 			break
 		}
