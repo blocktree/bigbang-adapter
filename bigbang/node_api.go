@@ -411,11 +411,12 @@ func (c *Client) getToFromTxID (txid string, vout byte) (string, error) {
 		return "", err
 	}
 
-	if vout == 0 {
+	if vout == 0 || len(resp.Get("transaction").Get("vin").Array()) == 0 {
 		return resp.Get("transaction").Get("sendto").String(), nil
 	}
 
 	isChange := resp.Get("transaction").Get("vin").Array()[0].Get("vout").Uint() == 1
+	
 	for {
 		if isChange {
 			request = map[string]interface{}{
