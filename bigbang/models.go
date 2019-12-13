@@ -56,8 +56,7 @@ func (c *Client)NewTransaction(json *gjson.Result) *Transaction {
 	obj.TimeStamp = json.Get("transaction").Get("time").Uint()
 	obj.Type = json.Get("transaction").Get("type").String()
 	obj.Anchor = json.Get("transaction").Get("anchor").String()
-	from, _ := c.getToFromTxID(json.Get("transaction").Get("vin").Array()[0].Get("txid").String(), byte(json.Get("transaction").Get("vin").Array()[0].Get("vout").Uint()))
-	obj.From = from
+	obj.From =  json.Get("transaction").Get("sendfrom").String()
 	obj.Amount = convertFromAmount(json.Get("transaction").Get("amount").String())
 	obj.Fee = convertFromAmount(json.Get("transaction").Get("txfee").String())
 	obj.To = json.Get("transaction").Get("sendto").String()
@@ -79,7 +78,6 @@ func NewBlock(json *gjson.Result) *Block {
 
 	for _, tx := range json.Get("tx").Array() {
 		obj.Transactions = append(obj.Transactions, tx.String())
-
 	}
 
 	return obj

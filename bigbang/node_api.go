@@ -395,69 +395,6 @@ func (c *Client) getBlockByHeight(height uint64) (*Block, error) {
 	return NewBlock(resp), nil
 }
 
-func (c *Client) getToFromTxID (txid string, vout byte) (string, error) {
-
-	to := ""
-
-	path := "gettransaction"
-	request := map[string]interface{}{
-		"txid":txid,
-		"serialized": false,
-	}
-
-	resp, err := c.Call(path, request)
-
-	if err != nil {
-		return "", err
-	}
-
-	if vout == 0 || len(resp.Get("transaction").Get("vin").Array()) == 0 {
-		return resp.Get("transaction").Get("sendto").String(), nil
-	}
-
-	isChange := resp.Get("transaction").Get("vin").Array()[0].Get("vout").Uint() == 1
-	
-	for {
-		if isChange {
-			request = map[string]interface{}{
-				"txid":resp.Get("transaction").Get("vin").Array()[0].Get("txid").String(),
-				"serialized": false,
-			}
-			resp, err = c.Call(path, request)
-
-			if err != nil {
-				return "", err
-			}
-
-			if len(resp.Get("transaction").Get("vin").Array()) == 0 {
-				to = resp.Get("transaction").Get("sendto").String()
-				break
-			}
-			isChange = (resp.Get("transaction").Get("vin").Array()[0].Get("vout").Uint() == 1)
-
-		} else {
-
-			if len(resp.Get("transaction").Get("vin").Array()) == 0 {
-				to = resp.Get("transaction").Get("sendto").String()
-				break
-			}
-			request = map[string]interface{}{
-				"txid":resp.Get("transaction").Get("vin").Array()[0].Get("txid").String(),
-				"serialized": false,
-			}
-			resp, err = c.Call(path, request)
-
-			if err != nil {
-				return "", err
-			}
-			to = resp.Get("transaction").Get("sendto").String()
-			break
-		}
-	}
-
-	return to, nil
-}
-
 func (c *Client) getTransaction(txid string) (*Transaction, error) {
 	path := "gettransaction"
 	request := map[string]interface{}{
