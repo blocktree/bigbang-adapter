@@ -8,7 +8,7 @@ require (
 	github.com/blocktree/go-owcdrivers v1.2.23
 	github.com/blocktree/go-owcrypt v1.1.9
 	github.com/blocktree/openwallet v1.5.5
-	github.com/ethereum/go-ethereum v1.8.25
+	github.com/ethereum/go-ethereum v1.10.17
 	github.com/graarh/golang-socketio v0.0.0-20170510162725-2c44953b9b5f
 	github.com/imroc/req v0.2.3
 	github.com/pborman/uuid v1.2.0
