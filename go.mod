@@ -13,7 +13,7 @@ require (
 	github.com/imroc/req v0.2.3
 	github.com/pborman/uuid v1.2.0
 	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24
-	github.com/tidwall/gjson v1.2.1
+	github.com/tidwall/gjson v1.9.3
 )
 
 // replace github.com/blocktree/go-owcdrivers => /Users/heshuchao/workspace/go-workspace/projects/src/github.com/blocktree/go-owcdrivers
